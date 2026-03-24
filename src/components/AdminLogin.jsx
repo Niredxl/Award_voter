@@ -14,32 +14,32 @@ const AdminLogin = () => {
     if (adminLogin(username, password)) {
       navigate('/admin/dashboard');
     } else {
-      setError('Invalid username or password');
+      setError('Invalid username or password.');
     }
   };
 
   return (
-    <div className="min-h-[70vh] flex items-center justify-center animate-fade-in">
-      <div className="card w-full max-w-md">
+    <div className="min-h-[70vh] flex items-center justify-center animate-fade-in px-4">
+      <div className="w-full max-w-sm">
         <div className="flex flex-col items-center mb-8">
-          <div className="w-16 h-16 bg-dark-900 rounded-full flex items-center justify-center mb-4 border border-dark-700">
-            <Lock className="w-8 h-8 text-primary-500" />
+          <div className="w-14 h-14 bg-white/10 rounded-full flex items-center justify-center mb-4">
+            <Lock className="w-6 h-6 text-white/60" />
           </div>
-          <h2 className="text-2xl font-bold text-white">Admin Access</h2>
-          <p className="text-slate-400 mt-2 text-center text-sm">
-            Enter your credentials to manage awards and nominees.
+          <h2 className="text-xl font-bold text-white tracking-tight">Admin Sign In</h2>
+          <p className="text-sm text-white/40 mt-1 text-center">
+            Enter your credentials to continue.
           </p>
         </div>
 
         {error && (
-          <div className="bg-red-500/10 border border-red-500/20 text-red-500 text-sm p-3 rounded-lg mb-6 text-center">
+          <div className="bg-red-500/10 border border-red-500/20 text-red-400 text-sm p-3 rounded-xl mb-5 text-center font-medium">
             {error}
           </div>
         )}
 
-        <form onSubmit={handleLogin} className="space-y-6">
+        <form onSubmit={handleLogin} className="space-y-4">
           <div>
-            <label className="block text-sm font-medium text-slate-300 mb-2">
+            <label className="block text-xs font-medium text-white/50 mb-1.5 ml-1">
               Username
             </label>
             <input
@@ -48,12 +48,12 @@ const AdminLogin = () => {
               value={username}
               onChange={(e) => setUsername(e.target.value)}
               required
-              placeholder="e.g. admin"
+              placeholder="admin"
             />
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-slate-300 mb-2">
+            <label className="block text-xs font-medium text-white/50 mb-1.5 ml-1">
               Password
             </label>
             <input
@@ -66,7 +66,7 @@ const AdminLogin = () => {
             />
           </div>
 
-          <button type="submit" className="btn-primary w-full py-3">
+          <button type="submit" className="btn-primary w-full mt-2">
             Sign In
           </button>
         </form>

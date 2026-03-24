@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { getAwards } from '../utils/storage';
-import { ChevronRight, Award } from 'lucide-react';
+import { ChevronRight } from 'lucide-react';
 
 const AwardList = () => {
   const [awards, setAwards] = useState([]);
@@ -12,43 +12,28 @@ const AwardList = () => {
 
   return (
     <div className="animate-fade-in">
-      <div className="mb-12 text-center">
-        <h1 className="text-4xl md:text-5xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-white to-slate-400">
-          Vote for Excellence
-        </h1>
-        <p className="text-lg text-slate-400 max-w-2xl mx-auto">
-          Select an award category below to view the nominees and cast your vote. Make your voice count in the Golden Gala Awards!
-        </p>
-      </div>
+      {/* Hero */}
+      
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      {/* Award Cards */}
+      <div className="space-y-3">
         {awards.map((award, index) => (
           <Link 
             to={`/award/${award.id}`} 
             key={award.id}
-            className="group block"
-            style={{ animationDelay: `${index * 100}ms` }}
+            className="block group"
+            style={{ animationDelay: `${index * 80}ms` }}
           >
-            <div className="card h-full flex flex-col justify-between group-hover:-translate-y-1 transition-all duration-300">
-              <div>
-                <div className="flex items-center justify-between mb-4">
-                  <div className="p-3 bg-dark-700/50 rounded-lg text-primary-400 group-hover:text-primary-300 transition-colors">
-                    <Award className="w-6 h-6" />
-                  </div>
-                  <ChevronRight className="w-5 h-5 text-dark-500 group-hover:text-primary-400 transition-colors" />
-                </div>
-                <h2 className="text-2xl font-bold text-slate-200 mb-2 group-hover:text-white transition-colors">
+            <div className="bg-white/5 hover:bg-white/10 border border-white/10 rounded-2xl px-5 py-4 flex items-center justify-between transition-all duration-200 active:scale-[0.98]">
+              <div className="min-w-0 flex-1">
+                <h2 className="text-base font-semibold text-white tracking-tight">
                   {award.name}
                 </h2>
-                <p className="text-slate-400 group-hover:text-slate-300 transition-colors">
+                <p className="text-sm text-white/40 mt-0.5 truncate">
                   {award.description}
                 </p>
               </div>
-              <div className="mt-6 pt-4 border-t border-dark-700/50 flex justify-end">
-                <span className="text-sm font-medium text-primary-400 group-hover:text-primary-300 transition-colors">
-                  View Nominees →
-                </span>
-              </div>
+              <ChevronRight className="w-5 h-5 text-white/20 group-hover:text-white/50 transition-colors flex-shrink-0 ml-3" />
             </div>
           </Link>
         ))}

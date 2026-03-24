@@ -30,91 +30,94 @@ const NomineeList = () => {
       voteForNominee(nomineeId, id);
       setNominees(getNominees(id));
       setUserHasVoted(true);
-      setToastMessage('Vote cast successfully!');
-      
-      // Clear toast after 3s
+      setToastMessage('Your vote has been recorded.');
       setTimeout(() => setToastMessage(''), 3000);
     } catch (err) {
-      setToastMessage(err.message || 'Error occurred');
+      setToastMessage(err.message || 'Something went wrong.');
       setTimeout(() => setToastMessage(''), 3000);
     }
   };
 
-  if (!award) return <div className="text-center p-12 text-slate-400">Loading...</div>;
+  if (!award) return <div className="text-center p-12 text-white/40">Loading...</div>;
 
   return (
-    <div className="animate-fade-in relative pb-16">
+    <div className="animate-fade-in relative pb-20">
+      {/* Back */}
       <button 
         onClick={() => navigate('/')}
-        className="flex items-center space-x-2 text-slate-400 hover:text-white transition-colors mb-8"
+        className="flex items-center space-x-1 text-apple-blue text-sm font-medium mb-6 active:opacity-60 transition-opacity"
       >
         <ArrowLeft className="w-4 h-4" />
-        <span>Back to Awards</span>
       </button>
 
-      <div className="mb-10 block">
-        <h1 className="text-3xl md:text-4xl font-bold text-white mb-2">
+      {/* Header */}
+      <div className="mb-8">
+        <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-white">
           {award.name}
         </h1>
-        <p className="text-slate-400">{award.description}</p>
+        <p className="text-sm text-white/50 mt-1">{award.description}</p>
         
         {userHasVoted && (
-          <div className="mt-4 inline-flex items-center space-x-2 bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 px-4 py-2 rounded-lg">
-            <CheckCircle2 className="w-5 h-5" />
-            <span>You have cast your vote for this category</span>
+          <div className="mt-4 flex items-center space-x-2 text-emerald-400 text-sm font-medium">
+            <CheckCircle2 className="w-4 h-4" />
+            <span>You've voted in this category</span>
           </div>
         )}
       </div>
 
+      {/* Toast */}
       {toastMessage && (
-        <div className="fixed bottom-6 left-1/2 -translate-x-1/2 bg-emerald-600 text-white px-6 py-3 rounded-xl shadow-2xl flex items-center space-x-2 z-50 animate-slide-up">
-          <CheckCircle2 className="w-5 h-5" />
+        <div className="fixed bottom-6 left-1/2 -translate-x-1/2 bg-white text-black text-sm px-5 py-3 rounded-full shadow-xl flex items-center space-x-2 z-50 animate-slide-up">
+          <CheckCircle2 className="w-4 h-4" />
           <span>{toastMessage}</span>
         </div>
       )}
 
+      {/* Nominees */}
       {nominees.length === 0 ? (
-        <div className="text-center py-20 bg-dark-800/50 rounded-2xl border border-dark-700 border-dashed">
-          <p className="text-xl text-slate-400">No nominees yet for this category.</p>
-          <p className="text-sm text-dark-500 mt-2">Check back later when nominees are announced!</p>
+        <div className="text-center py-20 bg-white/5 rounded-2xl border border-white/10">
+          <p className="text-white/50 font-medium">No nominees yet.</p>
+          <p className="text-xs text-white/30 mt-1">Check back when nominees are announced.</p>
         </div>
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {nominees.map((nominee, index) => (
+        <div className="space-y-3">
+          {nominees.map((nominee) => (
             <div 
               key={nominee.id} 
-              className="card flex flex-col justify-between"
-              style={{ animationDelay: `${index * 100}ms` }}
+              className="bg-white/5 border border-white/10 rounded-2xl p-4 flex items-center space-x-4"
             >
-              <div>
-                <div className="aspect-square w-full rounded-xl bg-dark-900 overflow-hidden mb-4 relative ring-1 ring-dark-700/50 group flex items-center justify-center">
-                  {nominee.imageUrl ? (
-                    <img 
-                      src={nominee.imageUrl} 
-                      alt={nominee.name} 
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                    />
-                  ) : (
-                    <User className="w-20 h-20 text-dark-700" />
-                  )}
-                  <div className="absolute inset-0 bg-gradient-to-t from-dark-900 via-transparent to-transparent opacity-60"></div>
-                </div>
-                <h3 className="text-xl font-bold text-slate-200 mb-1">{nominee.name}</h3>
-                <p className="text-sm font-medium text-slate-400 mb-6 border-b border-dark-700/50 pb-4">
-                  Votes: <span className="text-white bg-dark-700 px-2 py-0.5 rounded-md ml-1">{nominee.votes}</span>
+              {/* Avatar */}
+              <div className="w-14 h-14 rounded-xl bg-white/10 overflow-hidden flex-shrink-0 flex items-center justify-center">
+                {nominee.imageUrl ? (
+                  <img 
+                    src={nominee.imageUrl} 
+                    alt={nominee.name} 
+                    className="w-full h-full object-cover"
+                  />
+                ) : (
+                  <User className="w-7 h-7 text-white/30" />
+                )}
+              </div>
+
+              {/* Info */}
+              <div className="flex-1 min-w-0">
+                <h3 className="text-base font-semibold text-white truncate">{nominee.name}</h3>
+                <p className="text-xs text-white/40 mt-0.5">
+                  {nominee.votes} {nominee.votes === 1 ? 'vote' : 'votes'}
                 </p>
               </div>
-              
+
+              {/* Vote Button */}
               <button
                 onClick={() => handleVote(nominee.id)}
                 disabled={userHasVoted}
-                className="btn-primary w-full flex items-center justify-center space-x-2 mt-auto"
+                className={`flex-shrink-0 text-sm font-semibold py-2 px-5 rounded-full transition-all duration-200 ${
+                  userHasVoted 
+                    ? 'bg-white/10 text-white/30 cursor-not-allowed' 
+                    : 'bg-apple-blue text-white active:scale-95'
+                }`}
               >
-                {userHasVoted ? (
-                  <span>Voted</span>
-                ) : (
-                  <span>Vote for {nominee.name}</span>
-                )}
+                {userHasVoted ? 'Voted' : 'Vote'}
               </button>
             </div>
           ))}

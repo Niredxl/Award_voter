@@ -5,6 +5,7 @@ import AwardList from './components/AwardList';
 import NomineeList from './components/NomineeList';
 import AdminLogin from './components/AdminLogin';
 import AdminDashboard from './components/AdminDashboard';
+import LightRays from './components/LightRays';
 import { initializeStorage } from './utils/storage';
 
 const App = () => {
@@ -13,21 +14,42 @@ const App = () => {
   }, []);
 
   return (
-    <div className="min-h-screen flex flex-col">
-      <Navbar />
-      <main className="flex-grow max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full">
-        <Routes>
-          <Route path="/" element={<AwardList />} />
-          <Route path="/award/:id" element={<NomineeList />} />
-          <Route path="/admin" element={<AdminLogin />} />
-          <Route path="/admin/login" element={<AdminLogin />} />
-          <Route path="/admin/dashboard" element={<AdminDashboard />} />
-        </Routes>
-      </main>
-      
-      <footer className="border-t border-dark-800 py-6 mt-12 text-center text-dark-500 text-sm">
-        <p>&copy; {new Date().getFullYear()} Golden Gala Awards. All rights reserved.</p>
-      </footer>
+    <div className="min-h-screen flex flex-col bg-black relative">
+      {/* LightRays Background */}
+      <div className="fixed inset-0 z-0">
+        <LightRays
+          raysOrigin="top-center"
+          raysColor="#0071e3"
+          raysSpeed={0.4}
+          lightSpread={1.2}
+          rayLength={2.5}
+          pulsating={true}
+          fadeDistance={1.2}
+          saturation={0.6}
+          followMouse={true}
+          mouseInfluence={0.05}
+          noiseAmount={0.02}
+          distortion={0.1}
+        />
+      </div>
+
+      {/* Content */}
+      <div className="relative z-10 flex flex-col min-h-screen">
+        <Navbar />
+        <main className="flex-grow max-w-5xl mx-auto px-5 py-8 w-full">
+          <Routes>
+            <Route path="/" element={<AwardList />} />
+            <Route path="/award/:id" element={<NomineeList />} />
+            <Route path="/admin" element={<AdminLogin />} />
+            <Route path="/admin/login" element={<AdminLogin />} />
+            <Route path="/admin/dashboard" element={<AdminDashboard />} />
+          </Routes>
+        </main>
+        
+        <footer className="py-6 text-center text-white/30 text-xs tracking-tight">
+          <p>Copyright &copy; {new Date().getFullYear()} Golden Gala Awards. All rights reserved.</p>
+        </footer>
+      </div>
     </div>
   );
 };
