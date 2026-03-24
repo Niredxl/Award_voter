@@ -20,6 +20,7 @@ const App = () => {
           <Route path="/" element={<AwardList />} />
           <Route path="/award/:id" element={<NomineeList />} />
           <Route path="/admin" element={<AdminLogin />} />
+          <Route path="/admin/login" element={<AdminLogin />} />
           <Route path="/admin/dashboard" element={<AdminDashboard />} />
         </Routes>
       </main>

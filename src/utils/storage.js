@@ -29,10 +29,56 @@ export const getAwardById = (id) => {
   return awards.find(a => a.id === id);
 };
 
+export const addAward = (name, description) => {
+  initializeStorage();
+  const awards = JSON.parse(localStorage.getItem('awards'));
+  const newAward = {
+    id: Date.now().toString(),
+    name,
+    description: description || ''
+  };
+  awards.push(newAward);
+  localStorage.setItem('awards', JSON.stringify(awards));
+  return newAward;
+};
+
+export const updateAward = (id, updates) => {
+  initializeStorage();
+  const awards = JSON.parse(localStorage.getItem('awards'));
+  const index = awards.findIndex(a => a.id === id);
+  if (index !== -1) {
+    awards[index] = { ...awards[index], ...updates };
+    localStorage.setItem('awards', JSON.stringify(awards));
+    return awards[index];
+  }
+  return null;
+};
+
+export const deleteAward = (id) => {
+  initializeStorage();
+  // Delete award
+  const awards = JSON.parse(localStorage.getItem('awards'));
+  const filteredAwards = awards.filter(a => a.id !== id);
+  localStorage.setItem('awards', JSON.stringify(filteredAwards));
+
+  // Cleanup nominees for this award
+  const nominees = JSON.parse(localStorage.getItem('nominees'));
+  const filteredNominees = nominees.filter(n => n.awardId !== id);
+  localStorage.setItem('nominees', JSON.stringify(filteredNominees));
+
+  // Cleanup votes for this award
+  const userVotes = JSON.parse(localStorage.getItem('userVotes'));
+  delete userVotes[id];
+  localStorage.setItem('userVotes', JSON.stringify(userVotes));
+};
+
 export const getNominees = (awardId) => {
   initializeStorage();
   const allNominees = JSON.parse(localStorage.getItem('nominees'));
-  return allNominees.filter(n => n.awardId === awardId);
+  if (awardId) {
+    return allNominees.filter(n => n.awardId === awardId);
+  }
+  return allNominees;
 };
 
 export const addNominee = (awardId, name, imageUrl) => {
@@ -48,6 +94,13 @@ export const addNominee = (awardId, name, imageUrl) => {
   nominees.push(newNominee);
   localStorage.setItem('nominees', JSON.stringify(nominees));
   return newNominee;
+};
+
+export const deleteNominee = (id) => {
+  initializeStorage();
+  const nominees = JSON.parse(localStorage.getItem('nominees'));
+  const filteredNominees = nominees.filter(n => n.id !== id);
+  localStorage.setItem('nominees', JSON.stringify(filteredNominees));
 };
 
 export const voteForNominee = (nomineeId, awardId) => {

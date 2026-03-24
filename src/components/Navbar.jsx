@@ -38,8 +38,8 @@ const Navbar = () => {
                 </button>
               </>
             ) : (
-              <Link to="/admin" className="text-sm text-dark-500 hover:text-dark-400 transition-colors">
-                Admin
+              <Link to="/admin/login" className="text-slate-300 hover:text-white transition-colors">
+              
               </Link>
             )}
           </div>
